@@ -5,17 +5,18 @@ export const THEMES = [
   { id: 'coeur', name: 'Cœur', sub: 'Cavités, valves, gros vaisseaux', locked: true },
   { id: 'poumons', name: 'Poumons', sub: 'Petite circulation · hématose' },
   { id: 'cerveau', name: 'Cerveau', sub: 'Carotides · jugulaires' },
-  { id: 'bras', name: 'Membres supérieurs', sub: 'Subclavières · radiale · pli du coude' },
-  { id: 'digestif', name: 'Foie & digestif', sub: 'Tronc cœliaque · système porte' },
+  { id: 'bras', name: 'Membres supérieurs', cap: 'Bras', sub: 'Subclavières · radiale · pli du coude' },
+  { id: 'digestif', name: 'Foie & digestif', cap: 'Digestif', sub: 'Tronc cœliaque · système porte' },
   { id: 'reins', name: 'Reins', sub: 'Artères & veines rénales' },
-  { id: 'jambes', name: 'Membres inférieurs', sub: 'Fémorales · saphènes · retour veineux' },
-  { id: 'coronaires', name: 'Coronaires', sub: 'La circulation du cœur lui-même' },
+  { id: 'jambes', name: 'Membres inférieurs', cap: 'Jambes', sub: 'Fémorales · saphènes · retour veineux' },
+  { id: 'pelvis', name: 'Pelvis', sub: 'Organes génitaux · vaisseaux gonadiques' },
+  { id: 'coronaires', name: 'Coronaires', cap: 'Coron.', sub: 'La circulation du cœur lui-même' },
 ];
 
 export const INFO = {
   overview: {
     t: 'Le cœur en bref', k: 'Vue d’ensemble',
-    d: 'Muscle creux d’environ 250–300 g (la taille d’un poing), situé dans le médiastin, entre les deux poumons, posé sur le diaphragme. Sa pointe (apex) est en bas, en avant et à gauche (5e espace intercostal gauche, ligne médio-claviculaire).',
+    d: 'Muscle creux d’environ 300 g chez l’homme et 250 g chez la femme (la taille du poing de la personne), situé dans le médiastin, entre les deux poumons, posé sur le diaphragme. Sa pointe (apex) est en bas, en avant et à gauche (5e espace intercostal gauche, ligne médio-claviculaire).',
     p: [
       '<b>Deux pompes côte à côte</b>, séparées par le septum et qui battent en même temps : le <b>cœur droit</b> envoie le sang pauvre en O₂ aux poumons, le <b>cœur gauche</b> envoie le sang riche en O₂ à tout le corps.',
       '<b>4 cavités</b> : 2 oreillettes (reçoivent le sang des veines) et 2 ventricules (éjectent le sang dans les artères).',
@@ -349,6 +350,36 @@ export const INFO = {
     d: 'On palpe une artère contre un plan dur. Fréquence normale chez l’adulte : 60–100 /min, régulier.',
     p: ['Carotidien (cou) · huméral (pli du coude) · radial (poignet) · fémoral (aine) · poplité (creux du genou) · pédieux (dos du pied).', 'On compte sur 1 minute si le pouls est irrégulier.'],
   },
+  rate: {
+    t: 'Rate', k: 'Organe', th: 'digestif',
+    d: 'Organe lymphoïde situé sous la coupole diaphragmatique gauche, derrière l’estomac.',
+    p: ['Irriguée par l’<b>artère splénique</b> (branche du tronc cœliaque) ; la <b>veine splénique</b> rejoint la veine porte.', 'Détruit les globules rouges âgés, participe à l’immunité.'],
+    i: ['Organe fragile : risque de rupture lors d’un traumatisme abdominal gauche (hémorragie interne, état de choc).'],
+  },
+  oesophage: {
+    t: 'Œsophage', k: 'Tube digestif', th: 'digestif',
+    d: 'Conduit musculaire qui descend derrière la trachée et derrière le cœur (contre l’oreillette gauche), traverse le diaphragme et s’abouche dans l’estomac.',
+    p: [],
+    i: ['Ses veines basses communiquent avec le système porte : en cas d’hypertension portale, elles se dilatent (varices œsophagiennes, risque d’hémorragie digestive).'],
+  },
+  gonadiques: {
+    t: 'Vaisseaux gonadiques', k: 'Pelvis', th: 'pelvis',
+    d: 'Artères testiculaires (homme) ou ovariennes (femme) : elles naissent de l’aorte abdominale, juste sous les artères rénales, car les gonades se forment près des reins chez l’embryon avant de descendre.',
+    p: ['Retour : la veine gonadique <b>droite</b> se jette dans la VCI, la <b>gauche</b> dans la veine rénale gauche.'],
+    i: ['Chez l’homme, cette asymétrie explique que la <b>varicocèle</b> (dilatation des veines du testicule) soit presque toujours à gauche.'],
+  },
+  uterus: {
+    t: 'Utérus, trompes et ovaires', k: 'Pelvis · femme', th: 'pelvis',
+    d: 'L’utérus est situé entre la vessie (en avant) et le rectum (en arrière), basculé vers l’avant (antéversion). Les trompes le relient aux ovaires.',
+    p: ['Vascularisation : <b>artères utérines</b> (branches des artères iliaques internes) et <b>artères ovariennes</b> (branches de l’aorte).', 'Pendant la grossesse, le débit utérin augmente énormément (≈ 500 mL/min au terme).'],
+    i: ['Hémorragie du post-partum : l’utérus doit se rétracter (« globe de sécurité ») pour comprimer ses vaisseaux.', 'Utérus gravide + décubitus dorsal = compression de la VCI (syndrome cave).'],
+  },
+  prostate: {
+    t: 'Prostate et testicules', k: 'Pelvis · homme', th: 'pelvis',
+    d: 'La prostate entoure l’urètre juste sous la vessie ; les testicules sont dans les bourses, hors de l’abdomen.',
+    p: ['Testicules : <b>artères testiculaires</b> issues de l’aorte, qui descendent par le canal inguinal (cordon spermatique).', 'Prostate : branches des artères iliaques internes.'],
+    i: ['Hypertrophie bénigne de la prostate (sujet âgé) : dysurie, risque de <b>rétention urinaire</b> (globe vésical).'],
+  },
   capillaires: {
     t: 'Capillaires', k: 'Lieu des échanges',
     d: 'Vaisseaux microscopiques entre artérioles et veinules, où le sang ralentit.',
@@ -402,4 +433,6 @@ export const QUIZ = [
   { q: 'Clique sur la veine qu’on observe pour chercher une turgescence (insuffisance cardiaque droite).', a: ['jugulaires'], th: ['cerveau'] },
   { q: 'Clique sur l’artère du pouls qu’on prend au poignet (ou sur son trajet).', a: ['art_bras'], th: ['bras'] },
   { q: 'Clique sur la valve dont la fermeture participe au 1er bruit (B1) côté droit.', a: ['tricuspide'], th: [] },
+  { q: 'Clique sur la veine où se jette la veine gonadique gauche.', a: ['veines_renales'], th: ['reins', 'pelvis'] },
+  { q: 'Clique sur l’organe qui reçoit environ 75 % de son sang par la veine porte.', a: ['foie'], th: ['digestif'] },
 ];

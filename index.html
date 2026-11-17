@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cœur & circulation</title>
 <meta name="description" content="Schéma 3D interactif du cœur et de la circulation sanguine, pour réviser en IFSI (2e année).">
-<meta name="theme-color" content="#070a12">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 28S3 20 3 11a6.5 6.5 0 0 1 13-1 6.5 6.5 0 0 1 13 1c0 9-13 17-13 17z' fill='%23ff5a5f'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#eef1f5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 28S3 20 3 11a6.5 6.5 0 0 1 13-1 6.5 6.5 0 0 1 13 1c0 9-13 17-13 17z' fill='%23d92332'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,88 +19,75 @@
 </script>
 </head>
 <body>
-<canvas id="scene" aria-label="Cœur en 3D"></canvas>
-<div class="vignette" aria-hidden="true"></div>
+<canvas id="scene" aria-label="Cœur et circulation en 3D"></canvas>
 
 <header class="brand">
   <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 28S3 20 3 11a6.5 6.5 0 0 1 13-1 6.5 6.5 0 0 1 13 1c0 9-13 17-13 17z"/></svg>
-  <div><h1>Cœur <em>&amp;</em> circulation</h1><p>Révisions IFSI · 2e année</p></div>
+  <div><h1>Cœur <em>&amp;</em> circulation</h1><p>Révisions IFSI</p></div>
 </header>
 
-<nav class="toolbar glass">
-  <button id="btnQuiz" title="Se tester">Quiz</button>
-  <button id="btnRef" title="Valeurs normales">Repères</button>
-  <button id="btnFront" title="Revenir à la vue de face">Vue de face</button>
-  <button id="btnInfo" class="only-mobile" title="Fiche">Fiche</button>
+<nav class="top glass">
+  <button class="ib" id="btnQuiz" data-icon="quiz" data-tip="Quiz : clique sur la bonne structure"></button>
+  <button class="ib" id="btnRef" data-icon="reperes" data-tip="Valeurs normales"></button>
+  <button class="ib" id="btnOverview" data-icon="info" data-tip="Le cœur en bref"></button>
+  <button class="ib" id="btnFront" data-icon="face" data-tip="Recadrer, vue de face"></button>
+  <button class="ib" id="btnTheme" data-icon="lune" data-tip="Thème sombre"></button>
 </nav>
 
-<aside id="panel" class="glass">
-  <button class="sheet-handle" id="panelHandle"><span></span>Thèmes &amp; réglages</button>
-  <div class="panel-body">
-    <section>
-      <h2>Thèmes</h2>
-      <p class="hint">Seuls les organes des thèmes cochés s’affichent.</p>
-      <div class="themes" id="themes"></div>
-      <div class="row2"><button class="ghost" id="allThemes">Tout afficher</button><button class="ghost" id="heartOnly">Cœur seul</button></div>
-    </section>
-    <section>
-      <h2>Sens du sang</h2>
-      <div class="dir">
-        <button class="dirbtn on" data-dir="aller"><b>Aller →</b><small>artères : partent du cœur</small></button>
-        <button class="dirbtn on" data-dir="retour"><b>← Retour</b><small>veines : reviennent au cœur</small></button>
-      </div>
-    </section>
-    <section>
-      <h2>Affichage</h2>
-      <div class="switches">
-        <label class="sw"><input type="checkbox" data-k="flow" checked><i></i>Flux sanguin</label>
-        <label class="sw"><input type="checkbox" data-k="transparent" checked><i></i>Cœur transparent</label>
-        <label class="sw"><input type="checkbox" data-k="coupe"><i></i>Coupe frontale</label>
-        <label class="sw"><input type="checkbox" data-k="conduction"><i></i>Conduction électrique</label>
-        <label class="sw"><input type="checkbox" data-k="labels" checked><i></i>Étiquettes</label>
-        <label class="sw"><input type="checkbox" data-k="realistic"><i></i>Couleurs réalistes</label>
-        <label class="sw"><input type="checkbox" data-k="bloom" checked><i></i>Effets lumineux</label>
-        <label class="sw"><input type="checkbox" data-k="sound"><i></i>Bruits B1 / B2</label>
-      </div>
-    </section>
-    <section>
-      <h2>Rythme</h2>
-      <div class="rate">
-        <input type="range" id="bpm" min="30" max="180" value="70" step="1" aria-label="Fréquence cardiaque">
-        <output id="bpmOut">70 bpm</output>
-      </div>
-      <div class="row2">
-        <button class="ghost" id="btnPlay">Pause</button>
-        <button class="ghost" id="btnSlow">Ralenti</button>
-      </div>
-    </section>
-    <section class="legend">
-      <h2>Légende</h2>
-      <ul>
-        <li><span class="sym rich"></span><span><b>Sang riche en O₂</b> : rouge, billes rondes, vaisseau lisse</span></li>
-        <li><span class="sym poor"></span><span><b>Sang pauvre en O₂</b> : bleu, petits cubes, vaisseau rayé</span></li>
-        <li><span class="sym arrow"></span><span>Cônes = sens du courant</span></li>
-        <li><span class="sym elec"></span><span>Influx électrique (conduction)</span></li>
-      </ul>
-    </section>
+<aside id="rail" class="glass" aria-label="Thèmes">
+  <div class="grp" id="themes"></div>
+  <div class="grp">
+    <button class="ib" id="allThemes" data-icon="tout" data-tip="Tout afficher"></button>
+    <button class="ib" id="heartOnly" data-icon="coeurseul" data-tip="Cœur seul"></button>
+  </div>
+  <div class="grp">
+    <button class="ib dirbtn on" data-dir="aller" data-icon="aller" data-tip="Aller : artères (partent du cœur)"></button>
+    <button class="ib dirbtn on" data-dir="retour" data-icon="retour" data-tip="Retour : veines (reviennent au cœur)"></button>
+  </div>
+  <div class="grp sex">
+    <button class="ib on" data-sex="h" data-icon="homme" data-tip="Corps d’homme"></button>
+    <button class="ib" data-sex="f" data-icon="femme" data-tip="Corps de femme"></button>
   </div>
 </aside>
 
-<section id="info" class="glass card" aria-live="polite">
-  <button class="close" id="infoClose" aria-label="Fermer">×</button>
-  <div class="kicker" id="infoKicker"></div>
-  <h2 id="infoTitle"></h2>
-  <div id="infoBody"></div>
-</section>
-
-<div id="cycle" class="glass">
-  <div class="ecg"><canvas id="ecg"></canvas><span class="ecg-tag">ECG</span></div>
+<div id="dock" class="glass">
+  <div class="ecg"><canvas id="ecg"></canvas><span class="ecg-tag">ECG</span><span class="bpm-tag"><b id="bpmOut">70</b> bpm</span></div>
   <div class="phase">
     <div class="phase-top"><b id="phaseName">—</b><span class="snd" id="b1">B1</span><span class="snd" id="b2">B2</span></div>
     <div class="valves"><span id="vAV"></span><span id="vSig"></span></div>
     <div class="phasebar" id="phaseBar"><i id="phaseCursor"></i></div>
   </div>
+  <div class="tools">
+    <div class="tgl">
+      <button class="ib tog on" data-k="flow" data-icon="flux" data-tip="Flux sanguin"></button>
+      <button class="ib tog on" data-k="transparent" data-icon="transparent" data-tip="Cœur transparent"></button>
+      <button class="ib tog" data-k="coupe" data-icon="coupe" data-tip="Coupe frontale du cœur"></button>
+      <button class="ib tog" data-k="conduction" data-icon="conduction" data-tip="Conduction électrique"></button>
+      <button class="ib tog" data-k="o2" data-icon="o2" data-tip="Cavités colorées selon l’O₂"></button>
+      <button class="ib tog on" data-k="body" data-icon="silhouette" data-tip="Silhouette du corps"></button>
+      <button class="ib tog" data-k="labels" data-icon="noms" data-tip="Afficher tous les noms"></button>
+      <button class="ib tog" data-k="sound" data-icon="son" data-tip="Bruits du cœur B1 / B2"></button>
+      <button class="ib tog only-dark" data-k="bloom" data-icon="eclat" data-tip="Effets lumineux"></button>
+    </div>
+    <div class="rate">
+      <button class="ib" id="btnPlay" data-icon="pause" data-tip="Pause"></button>
+      <button class="ib" id="btnSlow" data-icon="ralenti" data-tip="Ralenti"></button>
+      <input type="range" id="bpm" min="30" max="180" value="70" step="1" aria-label="Fréquence cardiaque" data-tip="Fréquence cardiaque">
+    </div>
+  </div>
 </div>
+
+<div id="legend" class="glass">
+  <span><i class="sym rich"></i>riche en O₂</span>
+  <span><i class="sym poor"></i>pauvre en O₂</span>
+</div>
+
+<section id="info" class="glass card hidden" aria-live="polite">
+  <button class="close" id="infoClose" aria-label="Fermer">×</button>
+  <div class="kicker" id="infoKicker"></div>
+  <h2 id="infoTitle"></h2>
+  <div id="infoBody"></div>
+</section>
 
 <div id="quiz" class="glass" hidden>
   <div class="quiz-head"><span id="quizCount"></span><span id="quizScore"></span></div>
@@ -111,8 +98,8 @@
 
 <div class="side-hint" id="sideL">Droite du patient</div><div class="side-hint" id="sideR">Gauche du patient</div>
 <div id="tip" hidden></div>
-<div id="toast" hidden>Fais glisser pour tourner · molette ou pincement pour zoomer · clique sur une structure pour ouvrir sa fiche</div>
-<div id="loader"><div class="pulse"></div><p>Chargement du cœur…</p></div>
+<div id="chip" hidden></div>
+<div id="loader"><div class="pulse"></div><p>Chargement…</p></div>
 <noscript><p class="nojs">Ce schéma a besoin de JavaScript et de WebGL.</p></noscript>
 <script type="module" src="js/main.js"></script>
 </body>
